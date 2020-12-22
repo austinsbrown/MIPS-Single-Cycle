@@ -1,0 +1,1 @@
+rm dump.vcd a.out
