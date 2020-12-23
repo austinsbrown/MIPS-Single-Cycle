@@ -15,7 +15,7 @@ module registers
     assign readData1 = (rr1 != 0)? memoryBlock[rr1]:0;          // read the data from the registers pointed by rr1 and rr2
     assign readData2 = (rr2 != 0)? memoryBlock[rr2]:0;
 
-    always @(posedge clk)begin
+    always @(posedge clk)begin                                  // write data to registers
         if(regWrite == 1'b1)begin
             memoryBlock[writeReg] <= writeData;
         end
