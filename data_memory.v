@@ -1,18 +1,18 @@
 module data_memory
 #(
-    parameter size = 32,                                        // size of each location
-    parameter length = 256                                      // number of locations
-)
-(
-    input clk,                                                  // input clock
-    input memWrite,                                             // write signal 
-    input memRead,                                              // memory read signal
-    input [$clog2(length)-1:0] address,                         // address to read/write
-    input [size-1:0]  writeData,                                // data to write
-    output [size-1:0] readData                                  // data to read
+    parameter size = 32,                                                    // size of each location
+    parameter length = 256                                                  // number of locations
+)   
+(   
+    input clk,                                                              // input clock
+    input memWrite,                                                         // write signal 
+    input memRead,                                                          // memory read signal
+    input [$clog2(length)-1:0] address,                                     // address to read/write
+    output [size-1:0] readData                                              // data to read
+    input [size-1:0]  writeData,                                            // data to write
 );
 
-    reg [$clog2(size)-1:0] data_memory_block [$clog2(length)-1:0];
+    reg [$clog2(size)-1:0] data_memory_block [$clog2(length)-1:0];          
 
     assign readData = data_memory_block[address];
 
@@ -21,4 +21,6 @@ module data_memory
             data_memory_block[address] <= writeData;
         end
     end
+
+    // todo: add a read command for simulation
 endmodule

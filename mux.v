@@ -1,7 +1,7 @@
 module mux#(parameter dataCount=16)
 (
-    input sel, 
-    input  [dataCount-1:0] in1,
+    input sel,                                  // selection bit
+    input  [dataCount-1:0] in1,                 
     input  [dataCount-1:0] in2,
     output [dataCount-1:0] out
 );
