@@ -1,1 +1,1 @@
-rm dump.vcd a.out
+rm dump.vcd *.out
