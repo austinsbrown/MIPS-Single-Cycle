@@ -11,5 +11,5 @@ module instruction_memory
     reg [$clog2(size)-1:0] mem [$clog2(length)-1:0];            // memory block 
     assign instruction = mem[programCounter];                   
 
-    // todo: add a read command for simulation
+    initial $readmemh("meminstr.dat", memory);
 endmodule

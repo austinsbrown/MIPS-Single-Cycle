@@ -8,8 +8,8 @@ module data_memory
     input memWrite,                                                         // write signal 
     input memRead,                                                          // memory read signal
     input [$clog2(length)-1:0] address,                                     // address to read/write
-    output [size-1:0] readData                                              // data to read
-    input [size-1:0]  writeData,                                            // data to write
+    output [size-1:0] readData,                                             // data to read
+    input [size-1:0]  writeData                                             // data to write
 );
 
     reg [$clog2(size)-1:0] data_memory_block [$clog2(length)-1:0];          
@@ -22,5 +22,5 @@ module data_memory
         end
     end
 
-    // todo: add a read command for simulation
+    initial $readmemh("memdata.dat", memory);
 endmodule
