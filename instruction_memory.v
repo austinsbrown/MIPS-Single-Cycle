@@ -5,11 +5,14 @@ module instruction_memory
 )
 (
     input  [$clog2(length)-1:0] programCounter,                 // keeps track of what instruction is to be executed next               
-    output [$clog2(size)-1:0] instruction                       // the instruction pointed to by the program counter
+    output [size-1:0] instruction_address                       // the instruction pointed to by the program counter
 );
 
-    reg [$clog2(size)-1:0] mem [$clog2(length)-1:0];            // memory block 
-    assign instruction = mem[programCounter];                   
+    reg [size-1:0] mem [length-1:0];                            // memory block 
+    assign instruction_address = mem[programCounter];                   
 
-    initial $readmemh("meminstr.dat", memory);
+    initial begin
+        $readmemh("instruction_memory.dat", mem);
+    end
+    
 endmodule
