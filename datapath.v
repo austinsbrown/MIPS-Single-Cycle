@@ -6,6 +6,7 @@
 `include "sign_extend.v"
 `include "alu_control.v"
 `include "alu.v"
+`include "shift_left_2.v"
 
 module datapath
 (
@@ -25,14 +26,14 @@ module datapath
     wire [31:0] aluMux, memMux, pcIn;
     wire [31:0] shiftLeftAdder, SimpleAdder;
     wire andOut;
-    wire [3:0] aluCtrl;
+    wire [3:0]  aluCtrl;
+    wire [31:0] shifted_2, aluAdder1_result, aluAdder2_result;
 
     mux #(5)  intoReg(regDst, instruction[20:16], instruction[15:11], regMux);                  // multiplexer that feeds into the regesters
     mux #(32) intoALU(aluSrc, readData2, signExtend, aluMux);                                   // multiplexer that feeds into the alu
     mux #(32) outMem(memToReg, aluOut, readData, memMux);                                       // multiplexer that takes output from alu and mem 
-    mux #(32) pcMux(andOut, SimpleAdder, shiftLeftAdder, pcIn);                                 // mux that feeds into the program counter
+    mux #(32) pcMux(andOut, aluAdder1_result, shiftLeftAdder, pcIn);                            // mux that feeds into the program counter
 
-    program_counter pc(clk, reset, branch, signExtend, instruction_address);
     instruction_memory iMem(instruction_address[7:0], instruction);
     control cont
     (
@@ -62,4 +63,7 @@ module datapath
     sign_extend se(instruction[15:0], signExtend);
     alu_control aluC(aluOP, instruction[5:0], aluCtrl);
     alu aluModule(readData1, aluMux, aluCtrl, aluOut, andOut);
+    shift_left_2 sl2(signExtend, shifted_2);
+    alu aluAdder1(instruction_address, 4, 4'b0010, aluAdder1_result, x);
+    alu aluAdder2(aluAdder1_result, shifted_2, 4'b0010, aluAdder2_result, x);
 endmodule
