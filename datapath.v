@@ -6,19 +6,14 @@
 module datapath
 (
     input clk,
-    input reset,
-    input RegDst,
-    input AluSrc,
-    input MemtoReg,
-    input RegWrite,
-    input MemRead,
-    input MemWrite,
-    input Branch,
-    input [1:0] ALUOp,
-    output [5:0] OpCode
+    input reset
 );
 
-    wire [31:0] instruction                                                         // the instruction read from instruction memory
+    wire clk, reset, RegDst, AluSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch;
+    wire [1:0] ALUOp;
+    wire [5:0] OpCode;
+
+    wire [31:0] instruction;                                                        // the instruction read from instruction memory
     wire [31:0] PCIn;                                                               // input for the pc 
     wire [7:0] PCOut;                                                               // input for instruction memory
     wire [31:0] operand1, operand2;                                                 // inputs for the alu
