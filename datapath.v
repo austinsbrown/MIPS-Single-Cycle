@@ -3,6 +3,7 @@
 `include "instruction_memory.v"
 `include "control.v"
 `include "registers.v"
+`include "sign_extend.v"
 
 module datapath
 (
@@ -22,6 +23,7 @@ module datapath
     wire [4:0]  writeReg;                                                               // output of the mux that feeds into the registers
     wire [31:0] writeData;                                                              // input for registers
     wire [31:0] readData1, readData2;                                                   // output of registers
+    wire [31:0] sign_extend;                                                            // output of the sign extend module
 
     program_counter pc(clk, reset, PCIn, PCOut);
     instruction_memory IMem(PCOut[7:0], instruction);
@@ -37,4 +39,6 @@ module datapath
         readData1,
         readData2
     );
+
+    sign_extend se(instruction[15:0], sign_extend);
 endmodule
