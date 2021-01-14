@@ -4,6 +4,8 @@
 `include "control.v"
 `include "registers.v"
 `include "sign_extend.v"
+`include "alu.v"
+`include "alu_control.v"
 
 module datapath
 (
@@ -18,12 +20,15 @@ module datapath
     wire [31:0] instruction;                                                            // the instruction read from instruction memory
     wire [31:0] PCIn;                                                                   // input for the pc 
     wire [31:0] PCOut;                                                                  // input for instruction memory
-    wire [31:0] operand1, operand2;                                                     // inputs for the alu
-    wire [3:0]  ALUControl;                                                             // output of the alu_control module
     wire [4:0]  writeReg;                                                               // output of the mux that feeds into the registers
     wire [31:0] writeData;                                                              // input for registers
     wire [31:0] readData1, readData2;                                                   // output of registers
-    wire [31:0] sign_extend;                                                            // output of the sign extend module
+    wire [31:0] signExtend;                                                             // output of the sign extend module
+    wire [3:0]  op;                                                                     // input for the alu
+    wire [31:0] operand2;                                                               // input for the alu
+    wire [31:0] result;                                                                 // output of the alu
+    wire        zero;                                                                   // output of the alu
+    
 
     program_counter pc(clk, reset, PCIn, PCOut);
     instruction_memory IMem(PCOut[7:0], instruction);
@@ -40,5 +45,8 @@ module datapath
         readData2
     );
 
-    sign_extend se(instruction[15:0], sign_extend);
+    sign_extend se(instruction[15:0], signExtend);
+    mux #(32) op2Mux(AluSrc, readData2, signExtend, operand2);
+    alu ALU(readData1, operand2, op, result, zero);
+    alu_control ALUControl(ALUOp, instruction[5:0], op);
 endmodule
